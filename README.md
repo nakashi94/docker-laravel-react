@@ -1,4 +1,4 @@
-# docker を用いた laravel と react(TypeScript)の環境構築
+# docker を用いた laravel × react の環境構築
 
 ## 動作確認
 

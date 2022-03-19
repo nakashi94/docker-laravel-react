@@ -10,7 +10,25 @@ services:
       - NODE_ENV=development
     volumes:
       - ./front:/app:cached
-    # command: sh -c 'cd front'
     ports:
       - '3000:3000'
     tty: true
+
+  db:
+    build:
+      context: ./.docker/db
+      dockerfile: Dockerfile
+    container_name: db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: hoge
+      MYSQL_USER: hoge
+      MYSQL_PASSWORD: hgoe
+      MYSQL_ROOT_PASSWORD: hoge
+      TZ: "Asia/Tokyo"
+    volumes:
+      - db:/var/lib/mysql:cached
+
+volumes:
+  db:
