@@ -5,9 +5,11 @@ services:
     build:
       context: ./.docker/front
       dockerfile: Dockerfile
+    image: front
     container_name: front
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./front:/app:cached
     ports:
@@ -18,6 +20,7 @@ services:
     build:
       context: ./.docker/db
       dockerfile: Dockerfile
+    image: db
     container_name: db
     ports:
       - 3306:3306
@@ -28,7 +31,23 @@ services:
       MYSQL_ROOT_PASSWORD: hoge
       TZ: "Asia/Tokyo"
     volumes:
-      - db:/var/lib/mysql:cached
+      - db_volumes:/var/lib/mysql:cached
+
+  api:
+    build:
+      context: ./.docker/api
+      dockerfile: Dockerfile
+    image: api
+    container_name: api
+    volumes:
+      - ./api:/app:cached
+    tty: true
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=development
+    depends_on:
+      - db
 
 volumes:
-  db:
+  db_volumes:
